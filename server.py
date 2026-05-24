@@ -307,10 +307,11 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
 if __name__ == '__main__':
     init_db()
-    PORT = 8765
+    PORT = int(os.environ.get('PORT', 8765))
     server = http.server.HTTPServer(('0.0.0.0', PORT), Handler)
     print(f'✅ Uzy Modas rodando em http://localhost:{PORT}')
     print(f'🛍️  Vitrine: http://localhost:{PORT}/')
     print(f'⚙️  Admin:   http://localhost:{PORT}/admin')
     print(f'🔑 Senha admin: uzy2025')
     server.serve_forever()
+
