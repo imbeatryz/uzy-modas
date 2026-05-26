@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uzy Modas — Moda Feminina em Boa Vista</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --preto: #111;
+    --rose: #c9a48a;
+    --rose-light: #f5ede6;
+    --cream: #faf7f4;
+    --muted: #888;
+    --border: rgba(0,0,0,0.1);
+  }
+  body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--preto); }
+
+  /* HEADER */
+  header {
+    background: var(--preto);
+    padding: 0 2rem;
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .logo-wrap { display: flex; flex-direction: column; }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 600; letter-spacing: 4px;
+    color: #fff; line-height: 1;
+  }
+  .logo em { color: var(--rose); font-style: italic; }
+  .logo-sub { font-size: 9px; letter-spacing: 4px; color: rgba(255,255,255,0.4); text-transform: uppercase; margin-top: 2px; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .insta-btn {
+    display: flex; align-items: center; gap: 6px;
+    color: rgba(255,255,255,0.6); font-size: 12px; text-decoration: none;
+    transition: color .2s;
+  }
+  .insta-btn:hover { color: var(--rose); }
+  .wpp-header {
+    background: #25D366; color: #fff; border: none;
+    padding: 8px 18px; border-radius: 20px;
+    font-size: 12px; font-weight: 500; cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+    font-family: 'Outfit', sans-serif; letter-spacing: .5px;
+    text-decoration: none;
+  }
+
+  /* HERO BANNER */
+  .hero {
+    background: var(--preto);
+    padding: 3.5rem 2rem 3rem;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(201,164,138,0.15) 0%, transparent 70%);
+  }
+  .hero-tag {
+    display: inline-block;
+    font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--rose); border: 1px solid rgba(201,164,138,0.4);
+    padding: 5px 16px; border-radius: 20px; margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 6vw, 64px); font-weight: 400;
+    color: #fff; line-height: 1.1; letter-spacing: 2px;
+    position: relative;
+  }
+  .hero h1 em { color: var(--rose); font-style: italic; }
+  .hero p {
+    color: rgba(255,255,255,0.5); font-size: 14px;
+    margin-top: 1rem; font-weight: 300; letter-spacing: .5px;
+  }
+
+  /* FILTROS */
+  .filters {
+    background: #fff; border-bottom: 1px solid var(--border);
+    padding: .75rem 2rem;
+    display: flex; gap: 8px; overflow-x: auto;
+    position: sticky; top: 64px; z-index: 40;
+  }
+  .filters::-webkit-scrollbar { display: none; }
+  .filter-btn {
+    border: 1px solid var(--border); background: transparent;
+    color: var(--muted); padding: 6px 16px; border-radius: 20px;
+    font-size: 12px; cursor: pointer; white-space: nowrap;
+    font-family: 'Outfit', sans-serif; transition: all .2s;
+    font-weight: 400;
+  }
+  .filter-btn.ativo { background: var(--preto); color: var(--rose); border-color: var(--preto); }
+  .filter-btn:hover:not(.ativo) { border-color: #999; color: var(--preto); }
+
+  /* GRID */
+  .section-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 2rem 2rem 1rem;
+  }
+  .section-head h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 400; letter-spacing: 1px; color: var(--preto);
+  }
+  .count { font-size: 12px; color: var(--muted); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px; padding: 0 2rem 3rem;
+  }
+
+  .card {
+    background: #fff; border-radius: 12px;
+    border: 1px solid var(--border); overflow: hidden;
+    cursor: pointer; transition: transform .25s, box-shadow .25s;
+    animation: fadeUp .4s both;
+  }
+  .card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+  .card:nth-child(1) { animation-delay: .05s; }
+  .card:nth-child(2) { animation-delay: .10s; }
+  .card:nth-child(3) { animation-delay: .15s; }
+  .card:nth-child(4) { animation-delay: .20s; }
+  .card:nth-child(5) { animation-delay: .25s; }
+
+  .card-img {
+    width: 100%; aspect-ratio: 3/4;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 64px; position: relative; overflow: hidden;
+  }
+  .card-img img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+  .card-img .emoji-fallback { position: relative; z-index: 1; }
+  .bg-rose { background: #f9ede6; }
+  .bg-lilas { background: #f0eaf7; }
+  .bg-azul { background: #e8f0f9; }
+  .bg-verde { background: #e8f5ee; }
+  .bg-preto { background: #f0f0f0; }
+  .bg-floral { background: #fef0f4; }
+  .bg-bege { background: #f5f0e6; }
+  .bg-nude { background: #f9f0e8; }
+
+  .card-badge {
+    position: absolute; top: 10px; left: 10px; z-index: 2;
+    font-size: 10px; font-weight: 500; letter-spacing: 1px;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 12px;
+  }
+  .badge-promo { background: #e84343; color: #fff; }
+  .badge-novo { background: var(--preto); color: var(--rose); }
+  .badge-esg { background: rgba(0,0,0,0.07); color: var(--muted); }
+
+  .card-body { padding: 12px 14px 14px; }
+  .card-nome { font-size: 13px; font-weight: 500; color: var(--preto); margin-bottom: 3px; }
+  .card-tam { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+  .card-foot { display: flex; align-items: center; justify-content: space-between; }
+  .preco-wrap {}
+  .preco-old { font-size: 11px; color: var(--muted); text-decoration: line-through; display: block; line-height: 1.2; }
+  .preco { font-size: 16px; font-weight: 500; color: var(--preto); }
+  .btn-wpp {
+    background: #25D366; border: none; border-radius: 50%;
+    width: 34px; height: 34px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .15s;
+  }
+  .btn-wpp:hover { transform: scale(1.1); }
+  .card.esgotado { opacity: .55; pointer-events: none; }
+
+  /* MODAL */
+  .overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(17,17,17,.7); z-index: 200;
+    align-items: flex-end; justify-content: center;
+  }
+  .overlay.open { display: flex; animation: fadeIn .2s; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .modal {
+    background: #fff; border-radius: 20px 20px 0 0;
+    width: 100%; max-width: 480px;
+    max-height: 90vh; overflow-y: auto;
+    animation: slideUp .3s cubic-bezier(.16,1,.3,1);
+  }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .modal-img {
+    width: 100%; height: 240px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 80px; position: relative;
+  }
+  .modal-img img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+  .modal-img .emoji-modal { position: relative; z-index: 1; }
+  .modal-body { padding: 1.5rem; }
+  .modal-nome {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 500; color: var(--preto); margin-bottom: 6px;
+  }
+  .modal-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
+  .modal-preco { font-size: 26px; font-weight: 500; color: var(--preto); margin-bottom: 4px; }
+  .modal-preco-old { font-size: 14px; color: var(--muted); text-decoration: line-through; margin-bottom: 1rem; }
+  .tam-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .tam-grid { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .tam-btn {
+    border: 1px solid var(--border); background: transparent;
+    border-radius: 8px; padding: 7px 14px; font-size: 13px; cursor: pointer;
+    font-family: 'Outfit', sans-serif; transition: all .15s; color: var(--preto);
+  }
+  .tam-btn.sel { border-color: var(--preto); background: var(--preto); color: var(--rose); }
+  .btn-wpp-modal {
+    width: 100%; background: #25D366; color: #fff; border: none;
+    border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 500;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-family: 'Outfit', sans-serif; margin-bottom: 10px; letter-spacing: .3px;
+    transition: background .2s;
+  }
+  .btn-wpp-modal:hover { background: #1da554; }
+  .btn-fechar {
+    width: 100%; background: transparent; border: 1px solid var(--border);
+    border-radius: 12px; padding: 12px; font-size: 13px; cursor: pointer;
+    font-family: 'Outfit', sans-serif; color: var(--muted);
+  }
+  .modal-handle {
+    width: 40px; height: 4px; background: rgba(0,0,0,0.15);
+    border-radius: 2px; margin: 12px auto 0;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--preto); color: rgba(255,255,255,0.4);
+    text-align: center; padding: 2rem;
+    font-size: 11px; letter-spacing: 1px;
+  }
+  footer a { color: var(--rose); text-decoration: none; }
+
+  .loading {
+    text-align: center; padding: 4rem;
+    color: var(--muted); font-size: 14px;
+  }
+  .vazio {
+    text-align: center; padding: 4rem 2rem;
+    color: var(--muted);
+  }
+  .vazio h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; margin-bottom: .5rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <div class="logo">UZY <em>Modas</em></div>
+    <div class="logo-sub">Moda Feminina · Boa Vista</div>
+  </div>
+  <div class="header-right">
+    <a href="https://instagram.com/uzymodas" target="_blank" class="insta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      @uzymodas
+    </a>
+    <a href="https://wa.me/559591611196" target="_blank" class="wpp-header">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-tag">✦ Nova coleção disponível</div>
+  <h1>Estilo que <em>fala</em><br>por você</h1>
+  <p>Peças selecionadas para a mulher moderna de Boa Vista</p>
+</section>
+
+<div class="filters" id="filters">
+  <button class="filter-btn ativo" data-cat="all">Tudo</button>
+  <button class="filter-btn" data-cat="vestido">Vestidos</button>
+  <button class="filter-btn" data-cat="blusa">Blusas</button>
+  <button class="filter-btn" data-cat="conjunto">Conjuntos</button>
+  <button class="filter-btn" data-cat="calca">Calças</button>
+  <button class="filter-btn" data-cat="sale">🏷️ Promoção</button>
+</div>
+
+<div class="section-head">
+  <h2 id="section-title">Coleção</h2>
+  <span class="count" id="count-label"></span>
+</div>
+
+<div class="grid" id="grid">
+  <div class="loading">Carregando peças...</div>
+</div>
+
+<footer>
+  <p>© 2025 <a href="https://instagram.com/uzymodas">Uzy Modas</a> · Boa Vista, Roraima</p>
+  <p style="margin-top:6px">Feito com ♥ para você</p>
+</footer>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="fecharModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-img" id="m-img"></div>
+    <div class="modal-body">
+      <div class="modal-nome" id="m-nome"></div>
+      <div class="modal-desc" id="m-desc"></div>
+      <div id="m-preco-old"></div>
+      <div class="modal-preco" id="m-preco"></div>
+      <div class="tam-label">Tamanho</div>
+      <div class="tam-grid" id="m-tam"></div>
+      <button class="btn-wpp-modal" id="m-wpp-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Quero essa peça!
+      </button>
+      <button class="btn-fechar" onclick="fecharModal()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '';
+let pecas = [];
+let catAtiva = 'all';
+let tamSel = null;
+let pecaAtual = null;
+
+const corClass = { rose:'bg-rose', lilas:'bg-lilas', azul:'bg-azul', verde:'bg-verde', preto:'bg-preto', floral:'bg-floral', bege:'bg-bege', nude:'bg-nude' };
+
+async function carregarPecas(cat) {
+  const url = cat === 'all' ? '/api/pecas' : `/api/pecas?categoria=${cat}`;
+  try {
+    const r = await fetch(url);
+    pecas = await r.json();
+  } catch(e) { pecas = []; }
+  renderGrid();
+}
+
+function renderGrid() {
+  const grid = document.getElementById('grid');
+  const titulo = document.getElementById('section-title');
+  const count = document.getElementById('count-label');
+  const nomes = { all:'Coleção completa', vestido:'Vestidos', blusa:'Blusas', conjunto:'Conjuntos', calca:'Calças', sale:'Promoções' };
+  titulo.textContent = nomes[catAtiva] || 'Coleção';
+  count.textContent = pecas.length > 0 ? `${pecas.length} peça${pecas.length!==1?'s':''}` : '';
+  if (!pecas.length) { grid.innerHTML = '<div class="vazio"><h3>Sem peças aqui</h3><p>Novas chegadas em breve!</p></div>'; return; }
+  grid.innerHTML = pecas.map((p,i) => {
+    const bg = corClass[p.cor] || 'bg-bege';
+    const imgHtml = p.imagem
+      ? `<img src="${p.imagem}" alt="${p.nome}" loading="lazy">`
+      : `<span class="emoji-fallback">${p.emoji || '👗'}</span>`;
+    const badgeHtml = p.status === 'esgotado'
+      ? `<div class="card-badge badge-esg">Esgotado</div>`
+      : p.preco_original ? `<div class="card-badge badge-promo">Promoção</div>`
+      : i < 2 ? `<div class="card-badge badge-novo">Novo</div>` : '';
+    const tams = Array.isArray(p.tamanhos) ? p.tamanhos.join(' · ') : '';
+    return `<div class="card${p.status==='esgotado'?' esgotado':''}" onclick="abrirModal('${p.id}')">
+      <div class="card-img ${bg}">${badgeHtml}${imgHtml}</div>
+      <div class="card-body">
+        <div class="card-nome">${p.nome}</div>
+        <div class="card-tam">${tams}</div>
+        <div class="card-foot">
+          <div class="preco-wrap">
+            ${p.preco_original ? `<span class="preco-old">R$ ${Number(p.preco_original).toFixed(2).replace('.',',')}</span>` : ''}
+            <span class="preco">R$ ${Number(p.preco).toFixed(2).replace('.',',')}</span>
+          </div>
+          <button class="btn-wpp" onclick="event.stopPropagation(); wppClick('${p.id}','${p.nome}',${p.preco})">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function abrirModal(id) {
+  pecaAtual = pecas.find(p => p.id === id);
+  if (!pecaAtual) return;
+  tamSel = null;
+  fetch('/api/clique', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({id, tipo:'clique'}) });
+  const bg = corClass[pecaAtual.cor] || 'bg-bege';
+  const imgHtml = pecaAtual.imagem
+    ? `<img src="${pecaAtual.imagem}" alt="${pecaAtual.nome}">`
+    : `<span class="emoji-modal">${pecaAtual.emoji || '👗'}</span>`;
+  document.getElementById('m-img').innerHTML = imgHtml;
+  document.getElementById('m-img').className = `modal-img ${bg}`;
+  document.getElementById('m-nome').textContent = pecaAtual.nome;
+  document.getElementById('m-desc').textContent = pecaAtual.descricao || '';
+  document.getElementById('m-preco').textContent = `R$ ${Number(pecaAtual.preco).toFixed(2).replace('.',',')}`;
+  const oldEl = document.getElementById('m-preco-old');
+  oldEl.innerHTML = pecaAtual.preco_original
+    ? `<div class="modal-preco-old">De R$ ${Number(pecaAtual.preco_original).toFixed(2).replace('.',',')}</div>` : '';
+  const tams = Array.isArray(pecaAtual.tamanhos) ? pecaAtual.tamanhos : [];
+  document.getElementById('m-tam').innerHTML = tams.length
+    ? tams.map(t=>`<button class="tam-btn" onclick="selTam(this,'${t}')">${t}</button>`).join('')
+    : '<span style="font-size:12px;color:#888">Tamanho único</span>';
+  document.getElementById('m-wpp-btn').onclick = () => abrirWpp();
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function selTam(btn, tam) {
+  document.querySelectorAll('.tam-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  tamSel = tam;
+}
+
+function abrirWpp() {
+  if (!pecaAtual) return;
+  fetch('/api/clique', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({id: pecaAtual.id, tipo:'whatsapp'}) });
+  const tam = tamSel ? ` — Tamanho ${tamSel}` : '';
+  const preco = `R$ ${Number(pecaAtual.preco).toFixed(2).replace('.',',')}`;
+  const msg = encodeURIComponent(`Olá! Vi na vitrine online da Uzy Modas e quero saber mais sobre:\n\n*${pecaAtual.nome}*${tam}\nPreço: ${preco}\n\nAinda disponível? 😊`);
+  window.open(`https://wa.me/559591611196?text=${msg}`, '_blank');
+}
+
+function wppClick(id, nome, preco) {
+  fetch('/api/clique', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({id, tipo:'whatsapp'}) });
+  const precoFmt = `R$ ${Number(preco).toFixed(2).replace('.',',')}`;
+  const msg = encodeURIComponent(`Olá! Vi na vitrine online da Uzy Modas e quero saber mais sobre:\n\n*${nome}*\nPreço: ${precoFmt}\n\nAinda disponível? 😊`);
+  window.open(`https://wa.me/559591611196?text=${msg}`, '_blank');
+}
+
+function fecharModal(e) {
+  if (e && e.target !== document.getElementById('overlay')) return;
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('filters').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('ativo'));
+  btn.classList.add('ativo');
+  catAtiva = btn.dataset.cat;
+  document.getElementById('grid').innerHTML = '<div class="loading">Carregando...</div>';
+  carregarPecas(catAtiva);
+});
+
+carregarPecas('all');
+</script>
+</body>
+</html>
