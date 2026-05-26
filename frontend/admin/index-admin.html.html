@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Uzy Modas</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --preto: #111; --rose: #c9a48a; --rose-light: #f9f2ed;
+    --bg: #f7f5f2; --white: #fff; --border: rgba(0,0,0,0.1);
+    --muted: #888; --danger: #e84343; --success: #25a244;
+  }
+  body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--preto); }
+
+  /* LOGIN */
+  .login-screen {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: var(--preto);
+  }
+  .login-box {
+    background: #fff; border-radius: 16px; padding: 2.5rem 2rem;
+    width: 100%; max-width: 360px; text-align: center;
+  }
+  .login-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-weight: 500; letter-spacing: 3px;
+    color: var(--preto); margin-bottom: 4px;
+  }
+  .login-logo em { color: var(--rose); }
+  .login-sub { font-size: 11px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; margin-bottom: 2rem; }
+  .login-box input {
+    width: 100%; border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px 16px; font-size: 14px; font-family: 'Outfit', sans-serif;
+    margin-bottom: 12px; outline: none; transition: border-color .2s;
+  }
+  .login-box input:focus { border-color: var(--rose); }
+  .login-box button {
+    width: 100%; background: var(--preto); color: #fff; border: none;
+    border-radius: 10px; padding: 13px; font-size: 14px; font-weight: 500;
+    cursor: pointer; font-family: 'Outfit', sans-serif;
+    transition: background .2s;
+  }
+  .login-box button:hover { background: #333; }
+  .login-erro { color: var(--danger); font-size: 12px; margin-top: 8px; }
+
+  /* LAYOUT ADMIN */
+  .admin-wrap { display: none; min-height: 100vh; }
+  .admin-wrap.visivel { display: flex; }
+
+  .sidebar {
+    width: 220px; background: var(--preto); min-height: 100vh;
+    display: flex; flex-direction: column; padding: 1.5rem 0;
+    position: fixed; left: 0; top: 0; bottom: 0; z-index: 10;
+  }
+  .side-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; letter-spacing: 3px; color: #fff;
+    padding: 0 1.5rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 1.5rem;
+  }
+  .side-logo em { color: var(--rose); }
+  .side-logo span { display: block; font-size: 9px; letter-spacing: 3px; color: rgba(255,255,255,0.3); font-family: 'Outfit', sans-serif; margin-top: 2px; }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 1.5rem; font-size: 13px; color: rgba(255,255,255,0.5);
+    cursor: pointer; transition: all .2s; border-left: 3px solid transparent;
+  }
+  .nav-item:hover { color: #fff; background: rgba(255,255,255,0.05); }
+  .nav-item.ativo { color: var(--rose); border-left-color: var(--rose); background: rgba(201,164,138,0.08); }
+  .nav-item svg { flex-shrink: 0; }
+  .side-bottom { margin-top: auto; padding: 1.5rem; }
+  .ver-vitrine {
+    display: block; text-align: center; background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.6); text-decoration: none; padding: 10px;
+    border-radius: 8px; font-size: 12px; transition: all .2s;
+  }
+  .ver-vitrine:hover { background: rgba(201,164,138,0.2); color: var(--rose); }
+
+  .main { margin-left: 220px; padding: 2rem; flex: 1; }
+
+  /* TOPBAR */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+  .page-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 500; }
+  .btn-primary {
+    background: var(--preto); color: #fff; border: none;
+    padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 500;
+    cursor: pointer; font-family: 'Outfit', sans-serif; display: flex; align-items: center; gap: 8px;
+    transition: background .2s;
+  }
+  .btn-primary:hover { background: #333; }
+
+  /* STATS */
+  .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 2rem; }
+  .stat {
+    background: var(--white); border-radius: 12px; padding: 1.2rem 1.5rem;
+    border: 1px solid var(--border);
+  }
+  .stat-val { font-size: 28px; font-weight: 500; color: var(--preto); }
+  .stat-lbl { font-size: 11px; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 1px; }
+  .stat-rose { border-top: 3px solid var(--rose); }
+
+  /* TABELA */
+  .card-section { background: var(--white); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
+  .card-head { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .card-head h3 { font-size: 15px; font-weight: 500; }
+  table { width: 100%; border-collapse: collapse; }
+  th { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); padding: 10px 16px; text-align: left; background: #fafafa; font-weight: 400; }
+  td { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); vertical-align: middle; }
+  tr:hover td { background: #fafafa; }
+  .peca-img { width: 40px; height: 50px; border-radius: 6px; object-fit: cover; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 20px; overflow: hidden; flex-shrink: 0; }
+  .peca-img img { width: 100%; height: 100%; object-fit: cover; }
+  .peca-info { display: flex; align-items: center; gap: 10px; }
+  .status-badge { font-size: 10px; padding: 3px 8px; border-radius: 10px; font-weight: 500; }
+  .status-ativo { background: #e8f7ee; color: #1a7a3a; }
+  .status-esgotado { background: #fef2e8; color: #a05a10; }
+  .acoes { display: flex; gap: 6px; }
+  .btn-sm {
+    border: 1px solid var(--border); background: transparent;
+    padding: 5px 10px; border-radius: 6px; font-size: 11px; cursor: pointer;
+    font-family: 'Outfit', sans-serif; color: var(--preto); transition: all .15s;
+  }
+  .btn-sm:hover { border-color: #999; }
+  .btn-sm.danger:hover { border-color: var(--danger); color: var(--danger); }
+  .btn-sm.rose:hover { border-color: var(--rose); color: var(--rose); }
+
+  /* MODAL FORM */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); z-index: 100;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-form {
+    background: #fff; border-radius: 16px; width: 100%; max-width: 520px;
+    max-height: 90vh; overflow-y: auto; padding: 2rem;
+  }
+  .modal-form h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; margin-bottom: 1.5rem; }
+  .form-group { margin-bottom: 1rem; }
+  .form-group label { display: block; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; border: 1px solid var(--border); border-radius: 8px;
+    padding: 10px 12px; font-size: 13px; font-family: 'Outfit', sans-serif;
+    outline: none; transition: border-color .2s; background: #fff; color: var(--preto);
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--rose); }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .tam-checks { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tam-check { border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; font-size: 12px; cursor: pointer; transition: all .15s; user-select: none; }
+  .tam-check.sel { background: var(--preto); color: var(--rose); border-color: var(--preto); }
+  .upload-area {
+    border: 2px dashed var(--border); border-radius: 8px; padding: 1.5rem;
+    text-align: center; cursor: pointer; transition: border-color .2s;
+  }
+  .upload-area:hover { border-color: var(--rose); }
+  .upload-area input { display: none; }
+  .upload-preview { width: 100%; max-height: 180px; object-fit: cover; border-radius: 8px; margin-top: 10px; }
+  .form-actions { display: flex; gap: 10px; margin-top: 1.5rem; }
+  .btn-cancel { flex: 1; background: transparent; border: 1px solid var(--border); border-radius: 8px; padding: 11px; font-size: 13px; cursor: pointer; font-family: 'Outfit', sans-serif; color: var(--muted); }
+  .btn-save { flex: 2; background: var(--preto); color: #fff; border: none; border-radius: 8px; padding: 11px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Outfit', sans-serif; }
+  .btn-save:hover { background: #333; }
+
+  .toast {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+    background: var(--preto); color: #fff; padding: 12px 20px;
+    border-radius: 10px; font-size: 13px; opacity: 0;
+    transition: opacity .3s; pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+
+  .secao { display: none; }
+  .secao.ativa { display: block; }
+
+  .loading { padding: 3rem; text-align: center; color: var(--muted); }
+  .empty { padding: 3rem; text-align: center; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">UZY <em>Modas</em></div>
+    <div class="login-sub">Painel administrativo</div>
+    <input type="password" id="senha-input" placeholder="Senha de acesso" onkeydown="if(event.key==='Enter')login()">
+    <button onclick="login()">Entrar</button>
+    <div class="login-erro" id="login-erro"></div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="admin-wrap" id="admin-wrap">
+  <nav class="sidebar">
+    <div class="side-logo">UZY <em>Modas</em><span>Painel admin</span></div>
+    <div class="nav-item ativo" onclick="irPara('dashboard')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-item" onclick="irPara('pecas')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      Peças
+    </div>
+    <div class="side-bottom">
+      <a href="/" target="_blank" class="ver-vitrine">🛍 Ver vitrine pública</a>
+    </div>
+  </nav>
+
+  <main class="main">
+    <!-- DASHBOARD -->
+    <div class="secao ativa" id="secao-dashboard">
+      <div class="topbar"><h1 class="page-title">Dashboard</h1></div>
+      <div class="stats-grid">
+        <div class="stat stat-rose"><div class="stat-val" id="s-pecas">—</div><div class="stat-lbl">Peças ativas</div></div>
+        <div class="stat"><div class="stat-val" id="s-cliques">—</div><div class="stat-lbl">Cliques hoje</div></div>
+        <div class="stat"><div class="stat-val" id="s-wpp">—</div><div class="stat-lbl">Contatos WhatsApp hoje</div></div>
+        <div class="stat"><div class="stat-val" id="s-conv">—</div><div class="stat-lbl">Taxa de conversão</div></div>
+      </div>
+      <div class="card-section">
+        <div class="card-head"><h3>Peças mais visualizadas</h3></div>
+        <table>
+          <thead><tr><th>Peça</th><th>Cliques</th></tr></thead>
+          <tbody id="top-pecas"><tr><td colspan="2" class="loading">Carregando...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PEÇAS -->
+    <div class="secao" id="secao-pecas">
+      <div class="topbar">
+        <h1 class="page-title">Peças</h1>
+        <button class="btn-primary" onclick="abrirForm()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nova peça
+        </button>
+      </div>
+      <div class="card-section">
+        <table>
+          <thead><tr><th>Peça</th><th>Categoria</th><th>Preço</th><th>Tamanhos</th><th>Status</th><th>Cliques</th><th>Ações</th></tr></thead>
+          <tbody id="tabela-pecas"><tr><td colspan="7" class="loading">Carregando...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL FORM -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)fecharForm()">
+  <div class="modal-form">
+    <h3 id="form-titulo">Nova peça</h3>
+    <input type="hidden" id="f-id">
+    <div class="form-group">
+      <label>Nome da peça</label>
+      <input type="text" id="f-nome" placeholder="Ex: Vestido Floral Rosa">
+    </div>
+    <div class="form-group">
+      <label>Descrição</label>
+      <textarea id="f-desc" placeholder="Descreva o material, caimento, estilo..."></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Preço (R$)</label>
+        <input type="number" id="f-preco" placeholder="0.00" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>Preço original (opcional)</label>
+        <input type="number" id="f-preco-old" placeholder="Para promoção" step="0.01">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Categoria</label>
+        <select id="f-cat">
+          <option value="vestido">Vestido</option>
+          <option value="blusa">Blusa</option>
+          <option value="conjunto">Conjunto</option>
+          <option value="calca">Calça</option>
+          <option value="outro">Outro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Emoji / Ícone</label>
+        <input type="text" id="f-emoji" placeholder="👗" maxlength="2">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Tamanhos disponíveis</label>
+      <div class="tam-checks" id="tam-checks">
+        <span class="tam-check" data-tam="PP">PP</span>
+        <span class="tam-check" data-tam="P">P</span>
+        <span class="tam-check" data-tam="M">M</span>
+        <span class="tam-check" data-tam="G">G</span>
+        <span class="tam-check" data-tam="GG">GG</span>
+        <span class="tam-check" data-tam="36">36</span>
+        <span class="tam-check" data-tam="38">38</span>
+        <span class="tam-check" data-tam="40">40</span>
+        <span class="tam-check" data-tam="42">42</span>
+        <span class="tam-check" data-tam="44">44</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Foto da peça</label>
+      <div class="upload-area" onclick="document.getElementById('f-foto').click()">
+        <input type="file" id="f-foto" accept="image/*" onchange="previewImg(this)">
+        <div id="upload-text">📷 Clique para adicionar foto</div>
+        <img id="f-preview" class="upload-preview" style="display:none">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Status</label>
+      <select id="f-status">
+        <option value="ativo">Ativo</option>
+        <option value="esgotado">Esgotado</option>
+      </select>
+    </div>
+    <div class="form-actions">
+      <button class="btn-cancel" onclick="fecharForm()">Cancelar</button>
+      <button class="btn-save" onclick="salvarPeca()">Salvar peça</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let token = localStorage.getItem('uzy_token');
+let pecasData = [];
+let imgUploadUrl = null;
+
+if (token) autenticar();
+
+async function login() {
+  const senha = document.getElementById('senha-input').value;
+  const r = await fetch('/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({senha}) });
+  const d = await r.json();
+  if (d.ok) {
+    token = d.token;
+    localStorage.setItem('uzy_token', token);
+    autenticar();
+  } else {
+    document.getElementById('login-erro').textContent = 'Senha incorreta.';
+  }
+}
+
+function autenticar() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-wrap').classList.add('visivel');
+  carregarDashboard();
+  carregarPecas();
+}
+
+function irPara(secao) {
+  document.querySelectorAll('.secao').forEach(s=>s.classList.remove('ativa'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('ativo'));
+  document.getElementById('secao-'+secao).classList.add('ativa');
+  event.currentTarget.classList.add('ativo');
+}
+
+async function carregarDashboard() {
+  const r = await fetch('/api/metricas', { headers: {'Authorization': 'Bearer '+token} });
+  const d = await r.json();
+  document.getElementById('s-pecas').textContent = d.pecas_ativas ?? '—';
+  document.getElementById('s-cliques').textContent = d.cliques_hoje ?? '—';
+  document.getElementById('s-wpp').textContent = d.whatsapp_hoje ?? '—';
+  const conv = d.cliques_hoje > 0 ? Math.round((d.whatsapp_hoje / d.cliques_hoje) * 100) : 0;
+  document.getElementById('s-conv').textContent = conv + '%';
+  const tbody = document.getElementById('top-pecas');
+  if (d.mais_vistas && d.mais_vistas.length) {
+    tbody.innerHTML = d.mais_vistas.map(p=>`
+      <tr><td>${p.nome}</td><td><strong>${p.cliques}</strong> cliques</td></tr>
+    `).join('');
+  } else {
+    tbody.innerHTML = '<tr><td colspan="2" class="empty">Sem dados ainda</td></tr>';
+  }
+}
+
+async function carregarPecas() {
+  const r = await fetch('/api/pecas');
+  pecasData = await r.json();
+  const tbody = document.getElementById('tabela-pecas');
+  if (!pecasData.length) { tbody.innerHTML = '<tr><td colspan="7" class="empty">Nenhuma peça cadastrada</td></tr>'; return; }
+  tbody.innerHTML = pecasData.map(p => {
+    const tams = Array.isArray(p.tamanhos) ? p.tamanhos.join(', ') : '—';
+    const imgEl = p.imagem
+      ? `<img src="${p.imagem}" style="width:100%;height:100%;object-fit:cover">`
+      : `<span>${p.emoji||'👗'}</span>`;
+    const precoFmt = `R$ ${Number(p.preco).toFixed(2).replace('.',',')}`;
+    const badgeClass = p.status==='esgotado' ? 'status-esgotado' : 'status-ativo';
+    const badgeTxt = p.status==='esgotado' ? 'Esgotado' : 'Ativo';
+    return `<tr>
+      <td><div class="peca-info">
+        <div class="peca-img">${imgEl}</div>
+        <span>${p.nome}</span>
+      </div></td>
+      <td>${p.categoria||'—'}</td>
+      <td>${precoFmt}</td>
+      <td>${tams||'—'}</td>
+      <td><span class="status-badge ${badgeClass}">${badgeTxt}</span></td>
+      <td>${p.cliques}</td>
+      <td><div class="acoes">
+        <button class="btn-sm rose" onclick="editarPeca('${p.id}')">Editar</button>
+        <button class="btn-sm danger" onclick="arquivar('${p.id}')">Remover</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function abrirForm(id) {
+  imgUploadUrl = null;
+  document.getElementById('f-id').value = '';
+  document.getElementById('f-nome').value = '';
+  document.getElementById('f-desc').value = '';
+  document.getElementById('f-preco').value = '';
+  document.getElementById('f-preco-old').value = '';
+  document.getElementById('f-cat').value = 'vestido';
+  document.getElementById('f-emoji').value = '👗';
+  document.getElementById('f-status').value = 'ativo';
+  document.getElementById('f-preview').style.display = 'none';
+  document.getElementById('upload-text').style.display = '';
+  document.querySelectorAll('.tam-check').forEach(t=>t.classList.remove('sel'));
+  document.getElementById('form-titulo').textContent = 'Nova peça';
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function editarPeca(id) {
+  const p = pecasData.find(x=>x.id===id);
+  if (!p) return;
+  imgUploadUrl = p.imagem || null;
+  document.getElementById('f-id').value = p.id;
+  document.getElementById('f-nome').value = p.nome;
+  document.getElementById('f-desc').value = p.descricao||'';
+  document.getElementById('f-preco').value = p.preco;
+  document.getElementById('f-preco-old').value = p.preco_original||'';
+  document.getElementById('f-cat').value = p.categoria||'vestido';
+  document.getElementById('f-emoji').value = p.emoji||'👗';
+  document.getElementById('f-status').value = p.status||'ativo';
+  const tams = Array.isArray(p.tamanhos) ? p.tamanhos : [];
+  document.querySelectorAll('.tam-check').forEach(t => {
+    t.classList.toggle('sel', tams.includes(t.dataset.tam));
+  });
+  if (p.imagem) {
+    document.getElementById('f-preview').src = p.imagem;
+    document.getElementById('f-preview').style.display = 'block';
+    document.getElementById('upload-text').style.display = 'none';
+  } else {
+    document.getElementById('f-preview').style.display = 'none';
+    document.getElementById('upload-text').style.display = '';
+  }
+  document.getElementById('form-titulo').textContent = 'Editar peça';
+  document.getElementById('modal-overlay').classList.add('open');
+  irPara('pecas');
+}
+
+function fecharForm() { document.getElementById('modal-overlay').classList.remove('open'); }
+
+function previewImg(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('f-preview').src = e.target.result;
+    document.getElementById('f-preview').style.display = 'block';
+    document.getElementById('upload-text').style.display = 'none';
+    uploadImagem(e.target.result);
+  };
+  reader.readAsDataURL(file);
+}
+
+async function uploadImagem(dataUrl) {
+  const r = await fetch('/api/upload', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({data: dataUrl}) });
+  const d = await r.json();
+  if (d.ok) imgUploadUrl = d.url;
+}
+
+document.getElementById('tam-checks').addEventListener('click', e => {
+  const chip = e.target.closest('.tam-check');
+  if (chip) chip.classList.toggle('sel');
+});
+
+async function salvarPeca() {
+  const id = document.getElementById('f-id').value;
+  const tams = [...document.querySelectorAll('.tam-check.sel')].map(t=>t.dataset.tam);
+  const body = {
+    nome: document.getElementById('f-nome').value,
+    descricao: document.getElementById('f-desc').value,
+    preco: document.getElementById('f-preco').value,
+    preco_original: document.getElementById('f-preco-old').value || null,
+    categoria: document.getElementById('f-cat').value,
+    emoji: document.getElementById('f-emoji').value || '👗',
+    status: document.getElementById('f-status').value,
+    tamanhos: tams,
+    imagem: imgUploadUrl || null,
+  };
+  if (!body.nome || !body.preco) { mostrarToast('Preencha nome e preço!'); return; }
+  const url = id ? `/api/pecas/${id}` : '/api/pecas';
+  const method = id ? 'PUT' : 'POST';
+  const r = await fetch(url, { method, headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify(body) });
+  const d = await r.json();
+  if (d.ok) {
+    fecharForm();
+    carregarPecas();
+    carregarDashboard();
+    mostrarToast(id ? 'Peça atualizada!' : 'Peça cadastrada!');
+  }
+}
+
+async function arquivar(id) {
+  if (!confirm('Remover essa peça da vitrine?')) return;
+  const r = await fetch(`/api/pecas/${id}`, { method:'DELETE', headers:{'Authorization':'Bearer '+token} });
+  const d = await r.json();
+  if (d.ok) { carregarPecas(); carregarDashboard(); mostrarToast('Peça removida.'); }
+}
+
+function mostrarToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
